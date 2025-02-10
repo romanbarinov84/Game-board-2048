@@ -31,6 +31,7 @@ position: relative;
 .cell{
     background-color: #848181;
     border-radius: 1vmin;
+   
 }
 
 .tile{
@@ -42,9 +43,9 @@ position: relative;
  display: flex;
  justify-content: center;
  align-items: center;
+ text-align: center;
  width: var(--cell-size);
  height: var(--cell-size);
- background-color: red;
  border-radius: 1vmin;
  top: calc(var(--x) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
  left:calc(var(--y) * (var(--cell-size) + var(--cell-gap)) + var(--cell-gap));
@@ -53,6 +54,7 @@ position: relative;
  color:  hsl(200, 50%, var(--text-lightness));
  animation: show 200ms ease-in-out;
  transition: 100ms ease-in-out;
+
 }
 
 @keyframes show{

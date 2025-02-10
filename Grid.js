@@ -10,6 +10,7 @@ const CELL_GAP = 2 //промежуток между клетками, то ес
 //Конструктор класса Grid
 export default class Grid{
     #cells //благодаря такому подхолу вне конструктора мы несможем поменять значение
+    
     constructor(gridElement){  // gridElement это id= game-board
         gridElement.style.setProperty("--grid-size",`${GRID_SIZE}`)// задаем количество строк и столбцов в сетке
         gridElement.style.setProperty("--cell-size",`${CELL_SIZE}vmin`)// размер ячейек 
@@ -21,29 +22,56 @@ export default class Grid{
        
         
     }
+
+    get #emptyCells(){
+        return this.cells.filter((cell) => cell.tile == null)// геттер который отфильровует пустые ячейки
+    }
+
+     // функция случайной пустой ячейки 
+    randomEmptyCell(){
+     const randomIndex = Math.floor(Math.random() * this.#emptyCells.length)
+     return this.#emptyCells[randomIndex]
+    }
 }
 
 // задаем класс для ячейки
-class Cell{
-    #cellElement // при попытке обратится к этим полям из вне приведет к ошибке
-    #x
-    #y
-    constructor(cellElement, x, y){
-        this.#cellElement = cellElement
-        this.#x = x
-        this.#y = y
+class Cell {
+    #cellElement;  // при попытке обратиться к этим полям из вне приведет к ошибке
+    #x;
+    #y;
+    #tile;
+
+    constructor(cellElement, x, y) {
+        this.#cellElement = cellElement;
+        this.#x = x;
+        this.#y = y;
+    }
+
+    get tile() {
+        return this.#tile;
+    }
+
+    set tile(value) {
+        this.#tile = value;
+        if (value == null) return;
+        
+        // Устанавливаем координаты плитки через CSS
+        this.#tile.x = this.#x;
+        this.#tile.y = this.#y;
+
+       
+       
     }
 }
 
-
-  // Создаем элементы в game-board
-  function createCellElements(gridElement){
-    const cells = []// создаем пустой массив для ячеек
-    for(let i = 0; i < GRID_SIZE * GRID_SIZE; i++){
-        const cell = document.createElement("div") // создаем новый div для каждой ячейки
-        cell.classList.add("cell")// добавляем класс "cell" для стилей
-        cells.push(cell)// добавляем ячейку в массив
-        gridElement.append(cell)// добавляем ячейку в gridElement (на страницу)
+ // Создаем элементы в game-board
+function createCellElements(gridElement) {
+    const cells = []; // создаем пустой массив для ячеек
+    for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+        const cell = document.createElement("div"); // создаем новый div для каждой ячейки
+        cell.classList.add("cell"); // добавляем класс "cell" для стилей
+        cells.push(cell); // добавляем ячейку в массив
+        gridElement.append(cell); // добавляем ячейку в gridElement (на страницу)
     }
-    return cells  // возвращаем массив всех ячеек
-  }
+    return cells;  // возвращаем массив всех ячеек
+}
